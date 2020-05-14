@@ -1,6 +1,6 @@
 MART: Memory-Augmented Recurrent Transformer for Coherent Video Paragraph Captioning
 =====
-PyTorch code for our ACL 2020 paper ["MART: Memory-Augmented Recurrent Transformer for Coherent Video Paragraph Captioning"](.)
+PyTorch code for our ACL 2020 paper ["MART: Memory-Augmented Recurrent Transformer for Coherent Video Paragraph Captioning"](https://arxiv.org/abs/2005.05402)
 by [Jie Lei](http://www.cs.unc.edu/~jielei/), [Liwei Wang](http://www.deepcv.net/),
 [Yelong Shen](https://scholar.google.com/citations?user=S6OFEFEAAAAJ&hl=en), 
 [Dong Yu](https://sites.google.com/site/dongyu888/),
