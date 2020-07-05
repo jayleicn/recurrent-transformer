@@ -20,31 +20,106 @@ while maintaining relevance to the input video events.
 
 
 
-## Resources
-- Related works: [TVC (Video+Dialog Captioning)](https://github.com/jayleicn/TVCaption)
-
+## Related works:
+- [TVC (Video+Dialogue Captioning)](https://github.com/jayleicn/TVCaption). 
+- [TVR (Video+Dialogue Retrieval)](https://github.com/jayleicn/TVRetrieval). 
+- [TVQA (Localized Video QA)](https://github.com/jayleicn/TVQA). 
+- [TVQA+ (Spatio-Temporal Video QA)](https://github.com/jayleicn/TVQAplus).
 
 ## Getting started
-Coming soon! 
-
 ### Prerequisites
 0. Clone this repository
+```
+# no need to add --recursive as all dependencies are copied into this repo.
+git clone https://github.com/jayleicn/recurrent-transformer.git
+cd recurrent-transformer
+```
 
 1. Prepare feature files
 
-2. Install dependencies.
+Download features from Google Drive: [rt_anet_feat.tar.gz (39GB)](https://drive.google.com/file/d/1mbTmMOFWcO30PIcuSpYiZ1rqoy5ltE3A/view?usp=sharing) 
+and [rt_yc2_feat.tar.gz (12GB)](https://drive.google.com/file/d/1mj76DwNexFCYovUt8BREeHccQn_z_By9/view?usp=sharing).
+These features are repacked from features provided by [densecap](https://github.com/salesforce/densecap#annotation-and-feature). 
+```
+mkdir video_feature && cd video_feature
+tar -xf path/to/rt_anet_feat.tar.gz 
+tar -xf path/to/rt_yc2_feat.tar.gz 
+```
+
+2. Install dependencies
+- Python 2.7
+- PyTorch 1.1.0
+- nltk
+- easydict
+- tqdm
+- tensorboardX
+
+3. Add project root to `PYTHONPATH`
+```
+source setup.sh
+```
+Note that you need to do this each time you start a new session.
+
+### Inference with pre-trained model
+0. Download our vocab files and pre-trained MART model and config
+```
+bash scripts/download_pretrained.sh
+```
+
+1. Generate captions 
+```
+bash scripts/translate_greedy.sh anet_re_init_2019_10_01_11_34_22 val
+```
+This command generates captions using the downloaded model. 
+The generated captions are saved at `results/anet_re_init_2019_10_01_11_34_22/greedy_pred_val.json`
+
+2. Evaluate the generated captions
+```
+bash scripts/eval.sh anet val results/anet_re_init_2019_10_01_11_34_22/greedy_pred_val.json
+```
+This command evaluates the captions against multiple metrics, including language metrics 
+such as BLEU, METEOR, CIDEr-D and repetition metric R@4. The results are saved at 
+`results/anet_re_init_2019_10_01_11_34_22/greedy_pred_val_combined_metrics.json`. 
+The results should match exactly the results we present at Table 2 of the paper. 
+E.g., B@4 10.33; R@4 5.18.
 
 
 ### Training and Inference
 We give examples on how to perform training and inference with MART.
 
+0. Build Vocabulary
+
+You can skip this step if you downloaded our vocab files from the last section.
+```
+bash scripts/build_vocab.sh DATASET_NAME
+```
+`DATASET_NAME` can be `anet` for ActivityNet Captions or `yc2` for YouCookII.
+
+
 1. MART training
 
-2. MART inference
+The general training command is:
+```
+bash scripts/train.sh DATASET_NAME MODEL_TYPE
+```
+`MODEL_TYPE` can be one of `[mart, xl, xlrg, mtrans, mart_no_recurrence]`, see details below.
+
+| MODEL_TYPE         | Description                            |
+|--------------------|----------------------------------------|
+| mart               | Memory Augmented Recurrent Transformer |
+| xl                 | Transformer-XL                         |
+| xlrg               | Transformer-XL with recurrent gradient |
+| mtrans             | Vanilla Transformer                    |
+| mart_no_recurrence | mart with recurrence disabled          |
 
 
-### Evaluation
-
+To train our MART model on ActivityNet Captions:
+```
+bash scripts/train.sh anet mart
+```
+Training log and model will be saved at `results/anet_re_*`.  
+Once you have a trained model, you can follow the instructions in the last 
+section for caption generation and evaluation.  
 
 ## Citations
 If you find this code useful for your research, please cite our paper:
@@ -58,10 +133,11 @@ If you find this code useful for your research, please cite our paper:
 ```
 
 ## Others
-This code is partly inspired by the following projects: 
+This code used resources from the following projects: 
 [transformers](https://github.com/huggingface/transformers), 
 [transformer-xl](https://github.com/kimiyoung/transformer-xl), 
-[densecap](https://github.com/salesforce/densecap).
+[densecap](https://github.com/salesforce/densecap),
+[OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py).
 
 ## Contact
 jielei [at] cs.unc.edu

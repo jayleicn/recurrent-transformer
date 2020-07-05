@@ -8,6 +8,7 @@ cache/*
 */cache*/
 tmp*.py
 *pickle
+video_feature*
 
 # compiled files #
 *.pyc
