@@ -60,29 +60,6 @@ source setup.sh
 ```
 Note that you need to do this each time you start a new session.
 
-### Inference with pre-trained model
-0. Download our vocab files and pre-trained MART model and config
-```
-bash scripts/download_pretrained.sh
-```
-
-1. Generate captions 
-```
-bash scripts/translate_greedy.sh anet_re_init_2019_10_01_11_34_22 val
-```
-This command generates captions using the downloaded model. 
-The generated captions are saved at `results/anet_re_init_2019_10_01_11_34_22/greedy_pred_val.json`
-
-2. Evaluate the generated captions
-```
-bash scripts/eval.sh anet val results/anet_re_init_2019_10_01_11_34_22/greedy_pred_val.json
-```
-This command evaluates the captions against multiple metrics, including language metrics 
-such as BLEU, METEOR, CIDEr-D and repetition metric R@4. The results are saved at 
-`results/anet_re_init_2019_10_01_11_34_22/greedy_pred_val_combined_metrics.json`. 
-The results should match exactly the results we present at Table 2 of the paper. 
-E.g., B@4 10.33; R@4 5.18.
-
 
 ### Training and Inference
 We give examples on how to perform training and inference with MART.
@@ -118,8 +95,23 @@ To train our MART model on ActivityNet Captions:
 bash scripts/train.sh anet mart
 ```
 Training log and model will be saved at `results/anet_re_*`.  
-Once you have a trained model, you can follow the instructions in the last 
-section for caption generation and evaluation.  
+Once you have a trained model, you can follow the instructions below to generate captions. 
+
+
+2. Generate captions 
+```
+bash scripts/translate_greedy.sh anet_re_* val
+```
+Replace `anet_re_*` with your own model directory name. 
+The generated captions are saved at `results/anet_re_*/greedy_pred_val.json`
+
+
+3. Evaluate generated captions
+```
+bash scripts/eval.sh anet val results/anet_re_*/greedy_pred_val.json
+```
+The results should be comparable with the results we present at Table 2 of the paper. 
+E.g., B@4 10.33; R@4 5.18.
 
 ## Citations
 If you find this code useful for your research, please cite our paper:
