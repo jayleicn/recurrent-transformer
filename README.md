@@ -65,8 +65,6 @@ Note that you need to do this each time you start a new session.
 We give examples on how to perform training and inference with MART.
 
 0. Build Vocabulary
-
-You can skip this step if you downloaded our vocab files from the last section.
 ```
 bash scripts/build_vocab.sh DATASET_NAME
 ```
