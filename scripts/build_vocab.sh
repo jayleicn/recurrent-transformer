@@ -22,7 +22,7 @@ glove_path="path/to/glove.6B.300d.txt"
 
 python src/build_vocab.py \
 --train_path ${train_path} \
--dset_name ${dset_name} \
+--dset_name ${dset_name} \
 --cache ./cache \
 --min_word_count ${min_word_count} \
 --raw_glove_path ${glove_path}
