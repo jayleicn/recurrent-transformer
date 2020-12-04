@@ -5,7 +5,7 @@
 #   Note the additional flags added will overwrite the specified flags below,
 #   i.e., if `--exp_id run1` is specified, it will overwrite `--exp_id init` below.
 # Examples:
-#   anet debug mode: $ bash scripts/train.sh anet -debug
+#   anet debug mode: $ bash scripts/train.sh anet --debug
 #   yc2 training mode: $ bash scripts/train.sh yc2
 
 dset_name=$1  # [anet, yc2]
@@ -36,18 +36,18 @@ echo "---------------------------------------------------------"
 extra_args=()
 if [[ ${model_type} == "mart" ]]; then   # MART
     extra_args+=(--recurrent)
-elif [[ ${dset_name} == "xl" ]]; then    # Transformer-XL
+elif [[ ${model_type} == "xl" ]]; then    # Transformer-XL
     extra_args+=(--recurrent)
     extra_args+=(--xl)
-elif [[ ${dset_name} == "xlrg" ]]; then  # Transformer-XLRG
+elif [[ ${model_type} == "xlrg" ]]; then  # Transformer-XLRG
     extra_args+=(--recurrent)
     extra_args+=(--xl)
     extra_args+=(--xl_grad)
     extra_args+=(--n_epoch)
     extra_args+=(100)  # it takes longer for this model to converge
-elif [[ ${dset_name} == "mtrans" ]]; then    # Vanilla Transformer (from Masked Transformer paper)
+elif [[ ${model_type} == "mtrans" ]]; then    # Vanilla Transformer (from Masked Transformer paper)
     extra_args+=(--mtrans)
-elif [[ ${dset_name} == "mart_no_recurrence" ]]; then    # MART w/o recurrence
+elif [[ ${model_type} == "mart_no_recurrence" ]]; then    # MART w/o recurrence
     extra_args=()
 else
     echo "Wrong option for your first argument, select between anet and yc2"
